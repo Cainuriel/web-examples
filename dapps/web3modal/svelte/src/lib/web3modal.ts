@@ -10,21 +10,8 @@ import {
 import { readable, writable } from 'svelte/store'
 
 import {
-	arbitrum,
-	aurora,
-	avalanche,
-	base,
-	bsc,
-	celo,
-	gnosis,
-	mainnet,
-	optimism,
-	polygon,
-	zkSync,
-	zora,
-	goerli,
-	ronin,
-	saigon,
+	bscTestnet,
+	polygonMumbai,
 } from 'viem/chains'
 import { CUSTOM_WALLET } from './constants'
 
@@ -38,28 +25,16 @@ if(typeof window !== 'undefined'){
 const customWallets = storedCustomWallet ? [JSON.parse(storedCustomWallet)] : undefined
 
 const metadata = {
-	name: 'Web3Modal',
-	description: 'Web3Modal Example',
+	name: 'Pofex App',
+	description: 'Web3Modal of Polfex',
 	url: 'https://web3modal.com',
 	icons: ['https://avatars.githubusercontent.com/u/37784886'],
 }
 
 export const chains = [
-	arbitrum,
-	aurora,
-	avalanche,
-	base,
-	bsc,
-	celo,
-	gnosis,
-	mainnet,
-	optimism,
-	polygon,
-	zkSync,
-	zora,
-	goerli,
-	ronin,
-	saigon,
+    bscTestnet,
+	polygonMumbai
+
 ] as const
 
 export const wagmiConfig = defaultWagmiConfig({
