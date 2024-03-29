@@ -1,9 +1,9 @@
 import { getWalletClient , getPublicClient } from '@wagmi/core'
 import { BrowserProvider, FallbackProvider, JsonRpcProvider } from 'ethers'
-import { type Chain, type Client, type Transport, type WalletClient, createWalletClient, custom } from 'viem'
+import { type Chain, type Client, type Transport, type WalletClient } from 'viem'
 import { http, createConfig } from '@wagmi/core'
-import { bscTestnet, bsc } from '@wagmi/core/chains'
-
+import { polygonMumbai } from '@wagmi/core/chains';
+import { type Networkish} from "ethers"
 // import { createWalletClient, custom } from 'viem'
 // import { bscTestnet } from 'viem/chains'
  
@@ -13,12 +13,12 @@ import { bscTestnet, bsc } from '@wagmi/core/chains'
 // })
 
 
-export const walletClient:WalletClient = createWalletClient({
-  chain: bscTestnet,
-  transport: custom(window.ethereum!),
-})
+// export const walletClient:WalletClient = createWalletClient({
+//   chain: bscTestnet,
+//   transport: custom(window.ethereum!),
+// })
 
-export function clientToProvider(client: Client<Transport, Chain>) {
+export async function clientToProvider(client: Client<Transport, Chain>) {
   const { chain, transport } = client
   const network = {
     chainId: chain.id,
@@ -36,28 +36,27 @@ export function clientToProvider(client: Client<Transport, Chain>) {
 }
 
 const config = createConfig({
-  chains: [bscTestnet, bsc],
+  chains: [polygonMumbai],
   transports: {
-    [bscTestnet.id]: http(),
-    [bsc.id]: http(),
+    [polygonMumbai.id]: http(),
   },
 })
 
 /** Action to convert a viem Client to an ethers.js Provider. */
 export async function getEthersProvider() {
-  const client = getPublicClient(config)
-  return clientToProvider(client)
+  const client =  getPublicClient(config)
+  return await clientToProvider(client)
 }
 
 export async function walletClientToSigner(walletClient: WalletClient) {
-  const { chain, transport } = walletClient
+
   // const [account] = await walletClient.getAddresses()
   const network = {
-    chainId: chain?.id,
-    name: chain?.name,
-    ensAddress: chain?.contracts?.ensRegistry?.address,
+    chainId: walletClient.chain,
+    name: walletClient?.chain?.name,
+    ensAddress: walletClient?.chain?.contracts?.ensRegistry?.address,
   }
-  const provider = new BrowserProvider(transport, network);
+  const provider = new BrowserProvider(walletClient.transport, network as Networkish | undefined);
   
   // const provider = new JsonRpcProvider('https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID');
   // const signer = new JsonRpcSigner(provider, account)
