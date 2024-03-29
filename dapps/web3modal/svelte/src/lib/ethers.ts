@@ -49,18 +49,19 @@ export async function getEthersProvider() {
 }
 
 export async function walletClientToSigner(walletClient: WalletClient) {
-
+ console.log(`walletClient`, walletClient);
   // const [account] = await walletClient.getAddresses()
   const network = {
     chainId: walletClient.chain,
     name: walletClient?.chain?.name,
     ensAddress: walletClient?.chain?.contracts?.ensRegistry?.address,
   }
-  const provider = new BrowserProvider(walletClient.transport, network as Networkish | undefined);
-  
+  const provider = await new BrowserProvider(walletClient.transport, network as Networkish | undefined);
+  console.log(`provider`, provider);
   // const provider = new JsonRpcProvider('https://mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID');
   // const signer = new JsonRpcSigner(provider, account)
-  const signer = provider.getSigner()
+  const signer = await provider.getSigner();
+  console.log(`signer`, signer);
   return signer
 }
 

@@ -84,7 +84,7 @@
 		const contractMiles = "0x6C6dFC0a5bB35274Db0b4cFe99581e634D70CFEf"
         const signer = await getEthersSigner();
 		// console.log(`signer`, signer);
-		const contratSigner = new ethers.Contract(contractPassport, AbiMiles.abi, signer);
+		const contratSigner = new ethers.Contract(contractMiles, AbiMiles.abi, signer);
 		try {
 			const getYourMiles = await contratSigner.claimRewardTokens();
             const recivedMiles = await getYourMiles.wait();
@@ -94,11 +94,7 @@
 				console.log(revivedMiles.status);
 				console.log(`recivedMiles.hash`, recivedMiles.hash);
 				
-				
 			}
-
-
-
 			
 			} catch (err) {
 				console.log('Error: ', err);
